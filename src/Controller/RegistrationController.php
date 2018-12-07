@@ -25,8 +25,8 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // 3) Encode the password (you could also do this via Doctrine listener)
-            $p = $passwordEncoder->encodePassword($user, '1');
-//            $user->setPassword($password);
+            $p = $passwordEncoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($p);
 
             // 4) save the User!
             $entityManager = $this->getDoctrine()->getManager();
@@ -36,7 +36,7 @@ class RegistrationController extends AbstractController
             // ... do any other work - like sending them an email, etc
             // maybe set a "flash" success message for the user
 
-            return $this->redirectToRoute('replace_with_some_route');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render(
